@@ -4,7 +4,7 @@ package models
 
 import (
 	"strings"
-
+	"gotype/conf"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -15,30 +15,55 @@ type MenuModel struct {
 	menuOptions	[]string
 	cursor		int
 	selected 	string
+	config 		conf.Config
 }
+
+func NewMenuModel( c conf.Config ) MenuModel { 
+	return MenuModel{
+		config: c,
+		cursor: 0,
+		menuOptions: []string{ "Game", "Levels", "Settings", "Help" },
+	}	
+}
+
 
 func ( m MenuModel ) Init() tea.Cmd {
 	return nil
 }
 
-func ( m MenuModel ) HandleInput( msg string ) ( tea.Model, tea.Cmd ) {
-	switch( msg ) {
-		case "j", "down":
-		case "k", "up":
-		case "enter", "l":
-		case "q", "esc":
-			return m, tea.Quit
-	}
-	return m, nil
-}
-
 func ( m MenuModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
+	switch msg := msg.( type ) {
+		case tea.KeyMsg:
+			switch( msg.String() ) {
+				case "j", "down":
+					if m.cursor >= len( m.menuOptions ) {
+						m.cursor = 0
+					} else {
+						m.cursor++
+					}
+				case "k", "up":
+					if m.cursor <= 0 {
+						m.cursor = len( m.menuOptions )
+					} else {
+						m.cursor--
+					}
+				case "enter", "l", "right":
+					if m.menuOptions[ m.cursor ] == "Settings" {
+						return m, openEditor()	
+					} else {
+						return m, ChangeView( m.menuOptions[ m.cursor ] )
+					}
+				case "?":
+					return m, ChangeView("Help")
+				case "q", "esc":
+					return m, tea.Quit
+			}
+	}
 	return m, nil
 }
 
 
 func (m MenuModel) View() string {
-    // Full-width container that respects terminal boundaries
     menuWin := lipgloss.NewStyle().
         Width(m.width).
         MaxWidth(m.width).
@@ -56,28 +81,21 @@ func (m MenuModel) View() string {
     `
 
     title := lipgloss.NewStyle().
-        Foreground(lipgloss.Color("#7D56F4")).
+        Foreground( m.config.Colors.Foreground ).
         Align(lipgloss.Center).
         Render(titleText)
 
     var menuOptions strings.Builder
 
-    // Calculate maximum option width for centering
     maxOptionWidth := 0
     for _, option := range m.menuOptions {
         if len(option) > maxOptionWidth {
             maxOptionWidth = len(option)
         }
     }
-    // Add padding to max width
     maxOptionWidth += 4 
 
-    // Color definitions
-    selectedBg := "#7D56F4"
-    selectedFg := "#FFFFFF"
-    defaultFg := "#DDDDDD"
 
-    // Render menu options with dynamic width
     for i, option := range m.menuOptions {
         optionStyle := lipgloss.NewStyle().
             Padding(0, 1).
@@ -86,14 +104,13 @@ func (m MenuModel) View() string {
 
         if m.cursor == i {
             optionStyle = optionStyle.
-                Background(lipgloss.Color(selectedBg)).
-                Foreground(lipgloss.Color(selectedFg))
+                Background( m.config.Colors.Color1 ).
+                Foreground( m.config.Colors.Foreground )
         } else {
             optionStyle = optionStyle.
-                Foreground(lipgloss.Color(defaultFg))
+                Foreground( m.config.Colors.Foreground )
         }
 
-        // Center each option individually within the available space
         centeredOption := lipgloss.NewStyle().
             Width(m.width).
             Align(lipgloss.Center).
@@ -102,15 +119,13 @@ func (m MenuModel) View() string {
         menuOptions.WriteString(centeredOption + "\n")
     }
 
-    // Help text with dynamic width
     helpText := lipgloss.NewStyle().
-        Foreground(lipgloss.Color("#777777")).
+        Foreground( m.config.Colors.Color7 ).
         Width(m.width).
         Align(lipgloss.Center).
         MarginTop(1).
-        Render("↑/k: up • ↓/j: down • enter: select • q: quit")
+		Render("↑/k: up • ↓/j: down • enter: select • q: quit")
 
-    // Combine all components with proper spacing
     content := lipgloss.JoinVertical(
         lipgloss.Center,
         title,
@@ -123,3 +138,9 @@ func (m MenuModel) View() string {
 }
 
 
+func ( m MenuModel ) handleResize( height, width int ) MenuModel {
+	
+	m.height = height
+	m.width = width
+	return m
+}
