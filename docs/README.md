@@ -2,7 +2,9 @@
 
 ## Project structure
 
-<pre style="line-height: 1">
+<pre style="line-height: 0.9;">
+
+
 gotype
 ├── [LICENSE]( ../LICENSE )
 ├── [README.md]( ../README.md )
@@ -20,4 +22,6 @@ gotype
     ├── [commands.go]( models.md#commands.go )
     ├── [messages.go]( models.md#messages.go )
     └── [timer.go]( models.md#timer.go )
+
+
 <pre>
