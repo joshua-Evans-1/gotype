@@ -29,3 +29,28 @@ type Colors struct {
 	Color14		lipgloss.Color
 	Color15		lipgloss.Color
 }
+
+func ( c Colors ) Defaults(  ) Colors {
+	
+	c.Foreground = lipgloss.Color( "#f09fa3" )
+	c.Background = lipgloss.Color( "#0d090b" )
+	c.Cursor = lipgloss.Color( "#f09fa3" )
+
+	c.Color0 = lipgloss.Color( "#0d090b" )
+	c.Color1 = lipgloss.Color( "#A81B32" )
+	c.Color2 = lipgloss.Color( "#912633" )
+	c.Color3 = lipgloss.Color( "#B82437" )
+	c.Color4 = lipgloss.Color( "#C42A3D" )
+	c.Color5 = lipgloss.Color( "#D43244" )
+	c.Color6 = lipgloss.Color( "#E23C4C" )
+	c.Color7 = lipgloss.Color( "#f09fa3" )
+	c.Color8 = lipgloss.Color( "#a86f72" )
+	c.Color9 = lipgloss.Color( "#A81B32" )
+	c.Color10 = lipgloss.Color( "#912633" )
+	c.Color11 = lipgloss.Color( "#B82437" )
+	c.Color12 = lipgloss.Color( "#C42A3D" )
+	c.Color13 = lipgloss.Color( "#D43244" )
+	c.Color14 = lipgloss.Color( "#E23C4C" )
+	c.Color15 = lipgloss.Color( "#f09fa3" )
+	return c
+}

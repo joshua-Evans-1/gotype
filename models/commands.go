@@ -21,7 +21,7 @@ func openEditor() tea.Cmd {
 	if editor == "" {
 		editor = "vim"
 	}
-	c := exec.Command( editor, home + "/.config/gotype/conf" ) 
+	c := exec.Command( editor, home + "/.config/gotype/gotype.conf" ) 
 	return tea.ExecProcess( c, func( err error ) tea.Msg {
 		return EditorFinishedMsg{ err }
 	})

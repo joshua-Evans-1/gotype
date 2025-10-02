@@ -7,6 +7,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/posener/complete/cmd"
 )
 
 type Timer struct {
@@ -32,36 +33,27 @@ func newTimer( duration time.Duration ) Timer {
 }
 
 func ( t Timer ) Init() tea.Cmd {
-	return nil
+	return t.timer.Init(  )
 }
 
 func ( t Timer ) Update( msg tea.Msg ) ( Timer ,tea.Cmd ) {
-	var cmd tea.Cmd
 	switch msg :=  msg.( type )  {
-		case TimerStartMsg:
-			if !t.running {
-				t.running = true 
-				t.timer = timer.New( t.duration )
-				cmd = t.Init()
-			}
-		case TimerStopMsg:
-			if t.running {
-				t.running = false
-			}
-		case TimerRestarttMsg:
-			if t.running {
-				t.running = false
-			}
-			t.timer = timer.New( t.duration )
 		case TimerTickMsg:
-			if t.running {
-				var timerCmd tea.Cmd
-				t.timer, timerCmd = t.timer.Update( msg )
-				cmd = tea.Batch( cmd, timerCmd )
-				cmd = tea.Batch( cmd, func() tea.Msg { 
-					return TimerTickMsg{ TimeRemaining: t.timer.Timeout - time.Since( t.timer.StartTime ) }
-				} )
-			}
+			var cmd tea.Cmd
+			t.timer, cmd = t.timer.Update( msg )
+			return t, cmd
+
+		case timer.StartStopMsg:
+			var cmd tea.Cmd
+			t.timer, cmd = t.timer.Update( msg )
+			return t, cmd
+
+		case timer.TimeoutMsg:
+			var cmd tea.Cmd
+			t.running = false
+			t,timer, cmd = t.timer.t
+			return t, 
+
 	}
 	return t, cmd
 }
