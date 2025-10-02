@@ -4,8 +4,10 @@
 
 *A terminal-based typing test for programmers, written in Go.*
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/yourusername/gotype)](https://goreportcard.com/report/github.com/yourusername/gotype)
-
+![Go Version](https://img.shields.io/badge/Go-1.23+-00ADD8?logo=go&logoColor=white)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey)
+![Status](https://img.shields.io/badge/Status-Alpha-orange)
+[![Docs](https://img.shields.io/badge/docs-online-blue)](/docs)
 </div>
 
 ---
