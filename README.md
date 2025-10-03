@@ -14,10 +14,10 @@
 
 ## Overview
 
+![gotype screenshot]( screenshot.png )
+
 **gotype** is a fast, minimalist typing test built for programmers who want to practice typing code-like text inside the terminal.  
 It’s inspired by tools like [monkeytype](https://monkeytype.com/), but designed for the command line.  
-
-![gotype screenshot]( screenshot.png )
 
 - Written in **Go** for performance and portability  
 - Built with [Charm’s Bubble Tea](https://github.com/charmbracelet/bubbletea) TUI framework  
@@ -33,6 +33,4 @@ It’s inspired by tools like [monkeytype](https://monkeytype.com/), but designe
 Contributions, issues, and feature requests are welcome!
 Make sure to read [Contributor's Guide]( /docs/contributions.md )
 Feel free to open a PR or [create an issue]( https://github.com/joshua-Evans-1/gotype/issues )
-
-
 
