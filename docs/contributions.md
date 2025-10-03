@@ -37,7 +37,7 @@ This document outlines the basic guidelines for contributing.
 loosely follow the [Conventional Commits](https://www.conventionalcommits.org/) format.
 
 id prefer if youd use the same coding styling as me but not required
-```go
+```go codeStyleExample.go
 func ChangeView( view string ) tea.Cmd { 
 	return func() tea.Msg { 
 		return ChangeViewMsg{ View: view }
@@ -49,6 +49,7 @@ func ChangeView( view string ) tea.Cmd {
 * tabstops 4 
 * no new line braces
 * spaces between braces
+* snake case
 
 ---
 

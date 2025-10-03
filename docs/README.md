@@ -25,3 +25,42 @@
 
 </pre>
 
+
+# Frameworks
+
+## Bubble Tea  
+Bubble Tea uses the [Elm architecture](https://guide.elm-lang.org/architecture/).  
+
+```go
+// Example: basic Update function
+func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+    switch msg.(type) {
+    case tea.KeyMsg:
+        // handle input
+    }
+    return m, nil
+}
+```
+
+```go
+// Example: simple View function
+func (m model) View() string {
+    return "Hello, Bubble Tea!"
+}
+```
+
+---
+
+## Lipgloss  
+Lipgloss is used to style components in views.  
+
+```go
+// Example: define a style
+style := lipgloss.NewStyle().
+    Bold(true).
+    Foreground(lipgloss.Color("#ff79c6"))
+
+// Apply it to text
+styledText := style.Render("Hello, Lipgloss!")
+```
+
