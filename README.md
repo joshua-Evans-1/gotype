@@ -21,6 +21,9 @@ It’s inspired by tools like [monkeytype](https://monkeytype.com/), but designe
 - Built with [Charm’s Bubble Tea](https://github.com/charmbracelet/bubbletea) TUI framework  
 - Code-focused word lists (not just everyday text)  
 - Works directly in your terminal  
+* uses vim-like keybindings 
+
+
 
 ---
 
@@ -28,4 +31,6 @@ It’s inspired by tools like [monkeytype](https://monkeytype.com/), but designe
 Contributions, issues, and feature requests are welcome!
 Make sure to read [Contributor's Guide]( /docs/contributions.md )
 Feel free to open a PR or [create an issue]( https://github.com/joshua-Evans-1/gotype/issues )
+
+
 
