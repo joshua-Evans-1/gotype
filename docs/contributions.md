@@ -49,7 +49,7 @@ func ChangeView( view string ) tea.Cmd {
 * tabstops 4 
 * no new line braces
 * spaces between braces
-* snake case
+* camel case
 
 ---
 
