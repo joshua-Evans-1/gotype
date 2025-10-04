@@ -7,7 +7,6 @@ import (
 
 	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/posener/complete/cmd"
 )
 
 type Timer struct {
@@ -51,11 +50,11 @@ func ( t Timer ) Update( msg tea.Msg ) ( Timer ,tea.Cmd ) {
 		case timer.TimeoutMsg:
 			var cmd tea.Cmd
 			t.running = false
-			t,timer, cmd = t.timer.t
-			return t, 
+			t.timer, cmd = t.timer.Update( msg )
+			return t, cmd 
 
 	}
-	return t, cmd
+	return t, nil
 }
 
 
