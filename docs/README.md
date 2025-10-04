@@ -11,6 +11,8 @@
   ├── <a href="conf.md">conf</a>
   │   ├── <a href="conf.md#Colors.go">Colors.go</a>
   │   └── <a href="conf.md#conf.go">conf.go</a>
+  ├── <a href="database.md">database</a>
+  │   ├── <a href="database.md#database.go">database.go</a>
   ├── <a href="../go.mod">go.mod</a>
   ├── <a href="../go.sum">go.sum</a>
   ├── <a href="../main.go">main.go</a>
