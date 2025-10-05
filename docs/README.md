@@ -23,7 +23,6 @@
       ├── <a href="models.md#StatusBarModel.go">StatusBarModel.go</a>
       ├── <a href="models.md#commands.go">commands.go</a>
       ├── <a href="models.md#messages.go">messages.go</a>
-      └── <a href="models.md#timer.go">timer.go</a>
 
 </pre>
 

@@ -15,6 +15,17 @@ func ChangeView( view string ) tea.Cmd {
 	}
 }
 
+func StartGame() tea.Cmd {
+	return func () tea.Msg {
+		return StartGameMsg{}
+	}
+}
+
+func StopGame() tea.Cmd {
+	return func () tea.Msg {
+		return StopGameMsg{}
+	}
+}
 func openEditor() tea.Cmd {
 	editor := os.Getenv( "EDITOR" )
 	home := os.Getenv( "HOME" )

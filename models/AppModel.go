@@ -4,6 +4,9 @@ package models
 
 import (
 	"gotype/conf"
+	"time"
+
+	"github.com/charmbracelet/bubbles/timer"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -17,6 +20,7 @@ type AppModel struct {
 	Game 		GameModel
 	CurrentView	string
 	config 		conf.Config
+	timer 		timer.Model
 }
 
 func NewAppModel() AppModel {
@@ -41,6 +45,7 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
     var cmds []tea.Cmd
 	
 	switch msg := msg.( type ) {
+
 		case tea.KeyMsg:
 			if msg.String() == "ctrl+c" {
 				return m, tea.Quit
@@ -48,6 +53,7 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 			newStatusBar, statusbarCmd := m.StatusBar.Update( msg )	
 			m.StatusBar = newStatusBar.( StatusBarModel )
 			cmd = statusbarCmd
+
 
 		case EditorFinishedMsg:
 			if msg.err != nil {
@@ -57,15 +63,39 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 				cmd := tea.ExitAltScreen
 				return m, cmd
 			}
+		case StartGameMsg:
+			m.timer = timer.NewWithInterval( time.Second * 30 , time.Second )
+			return m, m.timer.Init()
+
+		case StopGameMsg:
+			m.timer = timer.NewWithInterval( time.Second * 0 , time.Second )
+
+			return m, ChangeView( "MENU" )
 
 		case tea.WindowSizeMsg:
 			m = m.handleResize( msg.Height, msg.Width )
+			return m, nil
 		
 		case ChangeViewMsg:
 			m.CurrentView = msg.View
 			m.StatusBar.CurrentView = msg.View
 			return m, nil
-		
+
+		case timer.TickMsg:
+			m.timer, cmd = m.timer.Update( msg )
+			m.StatusBar = m.StatusBar.updateTimeout( m.timer.Timeout.String() )
+			m.Game = m.Game.updateTimeout( m.timer.Timeout.String() )
+			return m, cmd
+
+		case timer.StartStopMsg:
+			m.timer, cmd = m.timer.Update( msg )
+			m.StatusBar = m.StatusBar.updateTimeout( m.timer.Timeout.String() )
+			m.Game = m.Game.updateTimeout( m.timer.Timeout.String() )
+			return m, cmd
+
+		case timer.TimeoutMsg:
+			cmd = ChangeView( "MENU" )	
+
 	}
 	switch( m.CurrentView ) {
 		case "MENU":

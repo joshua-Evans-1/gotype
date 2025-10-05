@@ -18,6 +18,8 @@ type GameModel struct {
 	config		conf.Config
 	targetText	[]string
 	cursor		int
+	timeout		string
+	running		bool
 }
 
 func ( m GameModel ) Init() tea.Cmd {
@@ -40,7 +42,8 @@ func ( m GameModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 		case tea.KeyMsg:
 			switch( msg.String() ) { 
 				case "esc":
-					return m, ChangeView( "MENU" )
+					m.running = false
+					return m, StopGame()
 
 				case "backspace", "left":
 					if m.cursor > 0 {
@@ -52,7 +55,12 @@ func ( m GameModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 					if m.textBuffer[ m.cursor ] == m.targetText[ m.cursor ] && 
 					m.cursor < len( m.targetText ) { 
 						m.cursor ++
-					}	
+					}
+
+			}
+			if !m.running {
+				m.running = true
+				return m, StartGame()
 			}
 	}
 		return m, nil
@@ -102,3 +110,12 @@ func ( m GameModel ) handleResize( height, width int ) GameModel {
 	m.width = width
 	return m
 }
+
+
+
+func ( m GameModel ) updateTimeout( timeout string ) GameModel {
+
+	m.timeout = timeout
+	return m
+}
+

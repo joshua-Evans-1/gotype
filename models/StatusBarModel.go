@@ -4,8 +4,9 @@ package models
 
 import (
 	"fmt"
-	"strings"
 	"gotype/conf"
+	"strings"
+
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -16,6 +17,7 @@ type StatusBarModel struct {
 	KeyBuffer	[]string
 	CurrentView	string
 	config 		conf.Config
+	timeout		string
 }
 
 func NewStatusBarModel( c conf.Config ) StatusBarModel {
@@ -41,31 +43,44 @@ func ( m StatusBarModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 	return m, nil
 }
 
-func ( m StatusBarModel ) View() string {
-	
+
+func (m StatusBarModel) View() string {
 	mode := lipgloss.NewStyle().
-		Background( m.config.Colors.Foreground ).
-		Foreground( m.config.Colors.Background )
+		Background(m.config.Colors.Foreground).
+		Foreground(m.config.Colors.Background)
 
 	keystrokes := lipgloss.NewStyle().
-		Align( lipgloss.Right )
+		Align(lipgloss.Right)
 
-	leftContent := mode.Render( fmt.Sprintf( " %s ", m.CurrentView ) ) 
-	rightContent := keystrokes.Render( fmt.Sprintf( " %s ", strings.Join( m.KeyBuffer, "" ) ) )
+	timeout := lipgloss.NewStyle().
+		Foreground(m.config.Colors.Foreground)
+
+	leftContent := mode.Render(fmt.Sprintf(" %s ", m.CurrentView))
+
+	rightParts := []string{}
+	if len(m.KeyBuffer) > 0 {
+		rightParts = append(rightParts, fmt.Sprintf(" %s ", strings.Join(m.KeyBuffer, "")))
+	}
+	if m.timeout != "0s" && m.timeout != "" {
+		rightParts = append(rightParts, timeout.Render(fmt.Sprintf("⏱ %s", m.timeout)))
+	}
+
+	rightContent := keystrokes.Render(strings.Join(rightParts, "  "))
+
 	spacer := lipgloss.NewStyle().
-		Width( m.width - lipgloss.Width( rightContent ) - lipgloss.Width( leftContent ) ).
+		Width(m.width - lipgloss.Width(rightContent) - lipgloss.Width(leftContent)).
 		Render()
-	
-	statusBar :=
-		lipgloss.JoinHorizontal(
-			0,
-			leftContent,
-			spacer,
-			rightContent,
-		)
-		
+
+	statusBar := lipgloss.JoinHorizontal(
+		lipgloss.Top,
+		leftContent,
+		spacer,
+		rightContent,
+	)
+
 	return statusBar
 }
+
 
 func ( m StatusBarModel ) handleResize( height, width int ) StatusBarModel {
 	
@@ -73,3 +88,10 @@ func ( m StatusBarModel ) handleResize( height, width int ) StatusBarModel {
 	m.width = width
 	return m
 }
+
+func ( m StatusBarModel ) updateTimeout( timeout string ) StatusBarModel {
+
+	m.timeout = timeout
+	return m
+}
+
