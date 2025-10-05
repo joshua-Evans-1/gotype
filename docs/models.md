@@ -3,7 +3,7 @@
 
 ## AppModel.go
 
-Defines the top-level application model. Coordinates state between sub-models (menu, game, status bar) and manages global messages/commands.
+Defines the top-level application model. Coordinates state between sub-models (menu, game, status bar, timer) and manages global messages/commands.
 
 ## GameModel.go
 
@@ -24,9 +24,5 @@ Contains Bubble Tea commands for asynchronous actions. Examples include starting
 ## messages.go
 
 Defines message types used in the Bubble Tea update loop. Messages are dispatched between models to handle events like keystrokes, timer ticks, or config changes.
-
-## timer.go
-
-Implements a game timer. Sends periodic tick messages to update the game model and stop the test when time runs out.
 
 
