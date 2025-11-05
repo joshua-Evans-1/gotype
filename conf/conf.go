@@ -43,6 +43,7 @@ func NewConfig() ( Config ) {
 	c = c.readColors( *viper.GetViper() )
 
 	c.TimerTimeout = viper.GetFloat64( "GAME.timeout" )
+	c.TimerTimeout = 30
 	c.Mode = viper.GetString( "GAME.mode" )
 	c.Tabstops = viper.GetInt( "GAME.tabstops" )
 	c.NewlineBraces = viper.GetBool( "GAME.newline_braces" )

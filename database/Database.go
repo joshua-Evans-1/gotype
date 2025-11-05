@@ -14,6 +14,8 @@ type Playthrough struct {
 	GameMode 	string
 	ElapsedTime	float64
 	Consistency	float64
+	Mistakes	int
+	CompPercent	float64
 }
 
 type Level struct {
@@ -38,14 +40,14 @@ func ConnDB() ( *gorm.DB, error ) {
 	return db, nil
 }
 
-func ( playthrough Playthrough ) Save() ( Playthrough, error ) {
-	res := DB.Create( &playthrough )
+func ( playthrough *Playthrough ) Save()  error {
+	res := DB.Create( playthrough )
 
 	if res.Error != nil {
-		return playthrough, res.Error
+		return res.Error
 	}
 
-	return playthrough, nil
+	return nil
 }
 
 

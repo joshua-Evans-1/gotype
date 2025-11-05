@@ -50,6 +50,7 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 			if msg.String() == "ctrl+c" {
 				return m, tea.Quit
 			}
+
 			newStatusBar, statusbarCmd := m.StatusBar.Update( msg )	
 			m.StatusBar = newStatusBar.( StatusBarModel )
 			cmd = statusbarCmd
@@ -63,13 +64,17 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 				cmd := tea.ExitAltScreen
 				return m, cmd
 			}
+
 		case StartGameMsg:
-			m.timer = timer.NewWithInterval( time.Second * 30 , time.Second )
+			m.timer = timer.NewWithInterval( time.Second * 60, time.Millisecond )
+
 			return m, m.timer.Init()
 
 		case StopGameMsg:
-			m.timer = timer.NewWithInterval( time.Second * 0 , time.Second )
 
+			m.Game = NewGameModel( m.config )
+			m.Game.handleResize( m.height, m.width )
+			m.timer = timer.NewWithInterval( time.Second * 0 , time.Second )
 			return m, ChangeView( "MENU" )
 
 		case tea.WindowSizeMsg:
@@ -84,13 +89,13 @@ func ( m AppModel ) Update( msg tea.Msg ) ( tea.Model, tea.Cmd ) {
 		case timer.TickMsg:
 			m.timer, cmd = m.timer.Update( msg )
 			m.StatusBar = m.StatusBar.updateTimeout( m.timer.Timeout.String() )
-			m.Game = m.Game.updateTimeout( m.timer.Timeout.String() )
+			m.Game = m.Game.updateTimeout( float64( m.timer.Timeout ) )
 			return m, cmd
 
 		case timer.StartStopMsg:
 			m.timer, cmd = m.timer.Update( msg )
 			m.StatusBar = m.StatusBar.updateTimeout( m.timer.Timeout.String() )
-			m.Game = m.Game.updateTimeout( m.timer.Timeout.String() )
+			m.Game = m.Game.updateTimeout( float64( m.timer.Timeout ) )
 			return m, cmd
 
 		case timer.TimeoutMsg:
@@ -141,7 +146,7 @@ func ( m AppModel ) handleResize( height, width int ) AppModel {
 	
 	m.StatusBar = m.StatusBar.handleResize( height, width )
 	m.Menu = m.Menu.handleResize( height, width )
-	m.Game = m.Game.handleResize( height, width )
+	m.Game.handleResize( height, width )
 	
 	return m
 }
