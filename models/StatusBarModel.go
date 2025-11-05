@@ -62,7 +62,7 @@ func (m StatusBarModel) View() string {
 		rightParts = append(rightParts, fmt.Sprintf(" %s ", strings.Join(m.KeyBuffer, "")))
 	}
 	if m.timeout != "0s" && m.timeout != "" {
-		rightParts = append(rightParts, timeout.Render(fmt.Sprintf("⏱ %s", m.timeout)))
+		rightParts = append(rightParts, timeout.Render(fmt.Sprintf("⏱ %.2s", m.timeout)))
 	}
 
 	rightContent := keystrokes.Render(strings.Join(rightParts, "  "))
