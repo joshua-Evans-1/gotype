@@ -67,7 +67,7 @@ func (m MenuModel) View() string {
     menuWin := lipgloss.NewStyle().
         Width(m.width).
         MaxWidth(m.width).
-        Align(lipgloss.Center)
+        Align(lipgloss.Center, lipgloss.Center)
 
     titleText := `
               ┏┓     ┏┓                  
@@ -82,7 +82,7 @@ func (m MenuModel) View() string {
 
     title := lipgloss.NewStyle().
         Foreground( m.config.Colors.Foreground ).
-        Align(lipgloss.Center).
+        Align(lipgloss.Center, lipgloss.Center).
         Render(titleText)
 
     var menuOptions strings.Builder
@@ -134,7 +134,7 @@ func (m MenuModel) View() string {
         helpText,
     )
 
-    return menuWin.Render(content)
+    return menuWin.Render( content )
 }
 
 
